@@ -25,7 +25,7 @@ func CliStart() {
 				var username = os.Getenv("pinguUserName")
 
 				for _, mail := range mails {
-					if mail.To == username || true {
+					if mail.To == username {
 						println("From", mail.From, ":", mail.Body)
 					}
 				}
