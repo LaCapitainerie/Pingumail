@@ -125,7 +125,7 @@ func Login(userName string) string {
 
 	// Make an HTTP request to the server to login
 	_ = godotenv.Load("client.env")
-	var server = fmt.Sprintf("http://%s:80/", os.Getenv("pinguServerIP"))
+	var server = fmt.Sprintf("http://%s:80/", "92.222.216.38")// os.Getenv("pinguServerIP"))
 
 	bodyRequest, err := json.Marshal(user)
 	handleErr(err, "Error marshalling body")
@@ -141,8 +141,5 @@ func Login(userName string) string {
 	responseBody, err := ioutil.ReadAll(resp.Body)
 	handleErr(err, "Error reading response body")
 
-	var userResp User
-	json.Unmarshal(responseBody, &userResp)
-
-	return userResp.Token
+	return string(responseBody)
 }

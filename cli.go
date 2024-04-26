@@ -3,12 +3,9 @@ package main
 import (
 	"client"
 	"os"
-	"server"
 	"strings"
 
 	"github.com/urfave/cli/v2" // imports as package "cli"
-
-	"golang.org/x/term"
 )
 
 func CliStart() {
@@ -17,16 +14,6 @@ func CliStart() {
 	app.Name = "pingumail"
 	app.Usage = "A simple mail server"
 	app.Commands = []*cli.Command{
-		{
-			Name:    "start",
-			Aliases: []string{"run", "up"},
-			Usage:   "Start the mail server",
-			Action: func(c *cli.Context) error {
-				println("Starting mail server...")
-				server.Start()
-				return nil
-			},
-		},
 		{
 			Name:    "reload",
 			Aliases: []string{"r"},
@@ -38,7 +25,7 @@ func CliStart() {
 				var username = os.Getenv("pinguUserName")
 
 				for _, mail := range mails {
-					if mail.To == username {
+					if mail.To == username || true {
 						println("From", mail.From, ":", mail.Body)
 					}
 				}
@@ -120,57 +107,6 @@ func CliStart() {
 			},
 		},
 		{
-			Name:    "user",
-			Aliases: []string{"u"},
-			Usage:   "Manage the users",
-			Subcommands: []*cli.Command{
-				{
-					Name:    "add",
-					Usage:   "Add a user",
-					Aliases: []string{"a"},
-					Action: func(c *cli.Context) error {
-
-						println("Adding user...")
-						if c.NArg() != 1 {
-							println("Usage: pingumail user add <username>")
-							return nil
-						}
-						var userName = c.Args().Get(0)
-
-						println("Enter password:")
-						password, err := term.ReadPassword(int(os.Stdin.Fd()))
-						if err != nil {
-							println("Error reading password")
-							return nil
-						}
-
-						server.AddUser(userName, string(password))
-						return nil
-					},
-				},
-				{
-					Name:    "remove",
-					Usage:   "Remove a user",
-					Aliases: []string{"r"},
-					Action: func(c *cli.Context) error {
-						println("Removing user...")
-						// RemoveUser()
-						return nil
-					},
-				},
-				{
-					Name:    "show",
-					Usage:   "Show the users",
-					Aliases: []string{"s"},
-					Action: func(c *cli.Context) error {
-						println("Showing users...")
-						// ShowUser()
-						return nil
-					},
-				},
-			},
-		},
-		{
 			Name:    "login",
 			Usage:   "Login as a user",
 			Aliases: []string{"l"},
@@ -187,7 +123,6 @@ func CliStart() {
 				if token != "" {
 					envVar := []byte(strings.Join([]string{
 						"pinguServerIP=" + os.Getenv("pinguServerIP"),
-						"pinguVersion=" + os.Getenv("pinguVersion"),
 						"pinguToken=" + token,
 					}, "\n"))
 
