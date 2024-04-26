@@ -25,7 +25,7 @@ func CliStart() {
 				var username = os.Getenv("pinguUserName")
 
 				for _, mail := range mails {
-					if mail.To == username || true {
+					if mail.To == username{
 						println("From", mail.From, ":", mail.Body)
 					}
 				}
@@ -58,6 +58,43 @@ func CliStart() {
 				client.SendMail(to, body)
 
 				return nil
+			},
+		},
+		{
+			Name:    "config",
+			Aliases: []string{"conf"},
+			Usage:   "Manage the mail server configuration",
+			Subcommands: []*cli.Command{
+				{
+					Name:    "add",
+					Usage:   "Add a configuration",
+					Aliases: []string{"a"},
+					Action: func(c *cli.Context) error {
+						println("Adding configuration...")
+						// AddConfig()
+						return nil
+					},
+				},
+				{
+					Name:    "remove",
+					Usage:   "Remove a configuration",
+					Aliases: []string{"r"},
+					Action: func(c *cli.Context) error {
+						println("Removing configuration...")
+						// RemoveConfig()
+						return nil
+					},
+				},
+				{
+					Name:    "show",
+					Usage:   "Show the configurations",
+					Aliases: []string{"s"},
+					Action: func(c *cli.Context) error {
+						println("Showing configurations...")
+						// ShowConfig()
+						return nil
+					},
+				},
 			},
 		},
 		{
